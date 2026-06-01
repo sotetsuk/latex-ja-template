@@ -27,11 +27,10 @@ __pycache__/
 venv/
 
 # ===== 取得した学会クラス（再配布回避のため追跡しない）=====
-# fetch-templates.sh で取得した配布物一式。sample.tex / .latexmkrc / README.md は追跡する。
-templates/*/*
-!templates/*/sample.tex
-!templates/*/.latexmkrc
-!templates/README.md
+# fetch-classes.sh で取得した配布物一式。ビルド確認用の sample.tex / .latexmkrc は追跡する。
+tests/societies/*/*
+!tests/societies/*/sample.tex
+!tests/societies/*/.latexmkrc
 
 # ===== OS / エディタ =====
 .DS_Store

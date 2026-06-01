@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 #
 # 主要国内学会の LaTeX クラス／スタイルファイルを公式配布元から取得し、
-# templates/<society>/ 配下に展開する。
+# tests/societies/<society>/ 配下に展開する。
 #
-# これらのファイルは各学会の配布物であり、本リポジトリには同梱していない
-# （.gitignore で除外）。投稿規程は各学会の公式サイトで必ず確認すること。
+# 目的は CI でのビルド確認（スモークテスト）。これらは投稿テンプレートではなく、
+# クラスが取得できればコンパイルが通ることだけを確認するためのもの。
+# ファイルは各学会の配布物であり、本リポジトリには同梱していない（.gitignore で除外）。
 #
 # 使い方:
-#   bash scripts/fetch-templates.sh            # 全学会
-#   bash scripts/fetch-templates.sh ipsj jsai  # 指定した学会のみ
+#   bash tests/societies/fetch-classes.sh            # 全学会
+#   bash tests/societies/fetch-classes.sh ipsj jsai  # 指定した学会のみ
 #
 set -uo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TPL="${ROOT}/templates"
+# このスクリプトは tests/societies/ にあるため、学会ディレクトリは同階層。
+TPL="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 公式ページ（配布 URL は更新されることがあるため、取得失敗時に案内する）
 IPSJ_PAGE="https://www.ipsj.or.jp/journal/submit/style.html"
@@ -66,5 +67,5 @@ for t in "${targets[@]}"; do
 done
 
 echo
-echo "取得後、各 templates/<society>/ で 'latexmk sample.tex' を実行してください。"
-echo "（クラス名やファイル名は配布版に合わせて sample.tex を調整する必要がある場合があります）"
+echo "取得後、tests/run-tests.sh が各 tests/societies/<society>/ で 'latexmk sample.tex' を実行し"
+echo "ビルド可否を REPORT.md に記録します（投稿テンプレートとしての利用は想定していません）。"

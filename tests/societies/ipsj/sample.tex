@@ -1,0 +1,17 @@
+% 情報処理学会（IPSJ）クラスのビルド確認用スモークテスト。
+% 投稿テンプレートではなく、ipsj.cls が取得できればコンパイルが通ることだけを確認する最小文書。
+% エンジン: upLaTeX + dvipdfmx（この階層の .latexmkrc が設定済み）。
+% クラスは tests/societies/fetch-classes.sh で取得する（配布物のため未同梱）。
+\documentclass[submit]{ipsj}
+
+\begin{document}
+\title{ビルド確認}
+\author{Test}{Test}{KobeU}[test@example.ac.jp]
+\affiliate{KobeU}{神戸大学}{Kobe University}
+\begin{abstract}
+ipsj.cls のコンパイル確認。
+\end{abstract}
+\maketitle
+\section{確認}
+コンパイルが通ることのみを確認する。
+\end{document}

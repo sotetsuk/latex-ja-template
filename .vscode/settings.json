@@ -35,7 +35,7 @@
   ],
 
   // ---- レシピ（既定は LuaLaTeX）----
-  // 学会テンプレ（templates/*）は各ディレクトリの .latexmkrc で
+  // 学会クラスのビルド確認（tests/societies/*）は各ディレクトリの .latexmkrc で
   // uplatex+dvipdfmx が使われるため "upLaTeX" レシピを選ぶ。
   "latex-workshop.latex.recipes": [
     {

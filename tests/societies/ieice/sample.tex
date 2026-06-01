@@ -1,0 +1,17 @@
+% 電子情報通信学会（IEICE）クラスのビルド確認用スモークテスト。
+% 投稿テンプレートではなく、ieicej.cls が取得できればコンパイルが通ることだけを確認する最小文書。
+% エンジン: upLaTeX + dvipdfmx（この階層の .latexmkrc が設定済み）。
+% クラスは tests/societies/fetch-classes.sh で取得する（配布物のため未同梱）。
+\documentclass[paper]{ieicej}
+
+\jtitle{ビルド確認}
+\jauthor{Test}{てすと}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+ieicej.cls のコンパイル確認。
+\end{abstract}
+\section{確認}
+コンパイルが通ることのみを確認する。
+\end{document}

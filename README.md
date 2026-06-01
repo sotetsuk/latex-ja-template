@@ -6,7 +6,7 @@ LaTeX 執筆環境テンプレートです。
 - ✅ ブラウザだけで日本語 LaTeX を執筆（GitHub Codespaces 対応）
 - ✅ VS Code 拡張 **LaTeX Workshop** を自動インストール
 - ✅ **LuaLaTeX** で `main.tex` を新規作成・コンパイル
-- ✅ 人工知能学会・情報処理学会・電子情報通信学会の主要テンプレをコンパイル（upLaTeX + dvipdfmx）
+- ✅ 人工知能学会・情報処理学会・電子情報通信学会の主要クラスの**ビルド可否を CI でスモークテスト**（投稿テンプレートとしては提供しません）
 - ✅ 軽量な TeX Live 構成（`scheme-basic` + 必要コレクションのみ、約 1.5GB）
 - ✅ Python3 + pip（`numpy` / `matplotlib` 同梱、追加も自由）
 - ✅ 画像・数式・表・参考文献入りの `main.tex` で即執筆
@@ -60,17 +60,6 @@ pip3 install --break-system-packages scipy   # パッケージ追加例
 
 追加したいパッケージは `requirements.txt` に書けば次回起動時に入ります。
 
-## 国内学会テンプレート
-
-各学会のクラスファイルは配布物のため同梱していません。取得スクリプトで導入します。
-
-```bash
-bash scripts/fetch-templates.sh         # IPSJ / JSAI / IEICE を取得
-cd templates/ipsj && latexmk sample.tex # upLaTeX + dvipdfmx でビルド
-```
-
-詳細は [`templates/README.md`](templates/README.md) を参照してください。
-
 ## 対応パッケージとテスト
 
 主要な LaTeX パッケージが**実際の配布イメージ上で**使えるかを、LuaLaTeX / upLaTeX の
@@ -81,6 +70,10 @@ cd templates/ipsj && latexmk sample.tex # upLaTeX + dvipdfmx でビルド
   → 最新 run の **Summary**、または **Artifacts (`latex-package-test`)** の `REPORT.md` を参照。
 - 検証内容や対象パッケージの追加方法は [`tests/README.md`](tests/README.md) を参照してください。
 
+国内学会クラス（IPSJ / JSAI / IEICE）も、配布元から取得してコンパイルが通るかを CI で
+スモークテストしています（`tests/societies/`）。**投稿テンプレートとしての提供ではなく**、
+クラスがビルドできることの確認のみで、取得・ビルドの失敗は CI を落としません。
+
 ## ディレクトリ構成
 
 ```
@@ -90,15 +83,14 @@ main.tex         # LuaLaTeX サンプル（図・数式・表・参考文献）
 references.bib   # 参考文献データベース
 latexmkrc        # ルート文書のビルド設定（LuaLaTeX）
 requirements.txt # Python 依存（numpy, matplotlib）
-scripts/         # make_figure.py（図生成）/ fetch-templates.sh（学会テンプレ取得）
+scripts/         # make_figure.py（図生成）
 figures/         # 画像（sample.png）
-templates/       # 国内学会テンプレ（ipsj / jsai / ieice）
 tests/           # 対応パッケージの網羅テスト（CI で実行・レポート生成）
+tests/societies/ # 国内学会クラスのビルド確認テスト（ipsj / jsai / ieice）
 ```
 
 ## トラブルシュート
 
-- **学会テンプレで `.cls` が見つからない**: `scripts/fetch-templates.sh` を実行してクラスを取得してください。配布 URL が変わっている場合は表示される公式ページから手動取得します。
 - **不足パッケージのエラー**: バランス型構成のため一部パッケージが未収録の場合があります。`sudo tlmgr install <パッケージ名>` で追加できます。
 - **日本語が出ない / 文字化け**: ファイルを UTF-8 で保存し、`main.tex` は LuaLaTeX（既定レシピ）でビルドしてください。
 
