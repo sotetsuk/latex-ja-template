@@ -38,6 +38,9 @@ latexmk main.tex      # -> out/main.pdf（LuaLaTeX）
 `devcontainer.json` はそのイメージ（`ghcr.io/<owner>/<repo>:latest`）を **pull するだけ**で、
 起動時に TeX Live のインストールは走りません。テンプレートから作った各リポジトリも同様に高速です。
 
+> 公開イメージの**マルチ arch・圧縮後サイズ**（＝ pull 時のダウンロード量の目安）は、
+> `Build devcontainer image` ワークフローの **Summary** に毎回出力されます。
+
 ### このテンプレートを自分用にフォーク／流用する場合
 1. `.devcontainer/devcontainer.json` の `image` を **自分のリポジトリ名**に書き換える
    （例: `ghcr.io/<あなた>/<リポジトリ>:latest`）。

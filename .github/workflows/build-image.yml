@@ -53,3 +53,31 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # 公開済みイメージ（マルチ arch・レジストリ上の圧縮後）のサイズを Summary に出す。
+      # PR 側の validate-devcontainer.yml は単一 arch・ローカルの非圧縮サイズなので、
+      # こちらは「実際に pull される配布物の大きさ」を main 上で継続可視化する補完。
+      - name: Show published image size
+        continue-on-error: true
+        run: |
+          {
+            echo "## Dev Container image (\`${IMAGE}:latest\`)"
+            echo
+            echo "### Compressed size per platform（pull 時のダウンロード量の目安）"
+            echo "| Platform | Compressed size |"
+            echo "|---|---|"
+            docker buildx imagetools inspect "${IMAGE}:latest" --raw > /tmp/index.json
+            for digest in $(jq -r '.manifests[] | select(.platform.os != "unknown") | .digest' /tmp/index.json); do
+              platform=$(jq -r --arg d "$digest" '.manifests[] | select(.digest==$d) | "\(.platform.os)/\(.platform.architecture)"' /tmp/index.json)
+              bytes=$(docker buildx imagetools inspect "${IMAGE}@${digest}" --raw | jq '[.layers[].size, .config.size] | add')
+              echo "| ${platform} | $(( bytes / 1024 / 1024 )) MiB |"
+            done
+            echo
+            echo "<details><summary>manifest（docker buildx imagetools inspect）</summary>"
+            echo
+            echo '```'
+            docker buildx imagetools inspect "${IMAGE}:latest"
+            echo '```'
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
