@@ -3,7 +3,7 @@
 # 日本語 LaTeX 執筆用 Dev Container
 # - ベース: debian:bookworm-slim（軽量）
 # - TeX Live: install-tl + texlive.profile（scheme-infraonly + 必要パッケージのみ・最小）
-# - Python3 + pip（numpy 等を後から追加可能）
+# - Python3 + pip（minted 用。任意ライブラリは各自で追加）
 #
 FROM debian:bookworm-slim
 
@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # ---- OS パッケージ ----------------------------------------------------------
 # wget/xzdec: install-tl と tlmgr のダウンロードに必要
 # perl: latexmk / TeX Live スクリプト, fontconfig: フォント解決
-# python3*: minted v3 (latexminted) と図生成 (numpy/matplotlib)
+# python3*: minted v3 (latexminted) 用。ユーザーが pip で任意ライブラリも追加可能
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         git \
