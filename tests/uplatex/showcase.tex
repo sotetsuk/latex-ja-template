@@ -6,6 +6,10 @@
 % =============================================================
 \documentclass[uplatex,dvipdfmx,a4paper,11pt]{jsarticle}
 
+% minted/fvextra は verbatim 内の " 等に \textquotedbl を用いるため、
+% 8bit エンジン(upLaTeX)では T1 エンコーディングが必要（OT1 には無い）。
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
