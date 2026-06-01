@@ -1,8 +1,12 @@
 {
   "name": "latex-ja-template",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+
+  // CI（.github/workflows/build-image.yml）が GHCR に公開した
+  // ビルド済みイメージを pull する。これにより起動時に TeX Live の
+  // インストールが走らず、即座に使える。
+  // Dockerfile を変更したら main に push → CI が再ビルド&公開して反映される。
+  // 自分のリポジトリ名に合わせてこのイメージ名を書き換えてもよい。
+  "image": "ghcr.io/sotetsuk/latex-ja-template:latest",
   "customizations": {
     "vscode": {
       "extensions": [

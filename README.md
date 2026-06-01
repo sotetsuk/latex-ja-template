@@ -31,11 +31,23 @@ GitHub 上で **「Use this template」**（このテンプレートを使用）
 latexmk main.tex      # -> out/main.pdf（LuaLaTeX）
 ```
 
-## 即起動のための prebuild（推奨）
+## 即起動の仕組み（ビルド済みイメージ）
 
-初回ビルド時間をなくすには **Codespaces Prebuilds** を有効化します。
-リポジトリの **Settings ▸ Codespaces ▸ Set up prebuild** で対象ブランチを指定すると、
-ビルド済みイメージがキャッシュされ、以後の起動が即座になります。
+このテンプレートは、TeX Live を含む Dev Container イメージを **GitHub Actions で
+ビルドし GHCR に公開**しています（[`.github/workflows/build-image.yml`](.github/workflows/build-image.yml)）。
+`devcontainer.json` はそのイメージ（`ghcr.io/<owner>/<repo>:latest`）を **pull するだけ**で、
+起動時に TeX Live のインストールは走りません。テンプレートから作った各リポジトリも同様に高速です。
+
+### このテンプレートを自分用にフォーク／流用する場合
+1. `.devcontainer/devcontainer.json` の `image` を **自分のリポジトリ名**に書き換える
+   （例: `ghcr.io/<あなた>/<リポジトリ>:latest`）。
+2. main に push すると CI がイメージをビルドして GHCR に公開する。
+3. **Settings ▸ Packages** で公開した GHCR パッケージの **可視性を Public** にする
+   （初回のみ。Private のままだと codespace 起動時に pull できない）。
+4. Dockerfile を変更したら push するだけで CI が再ビルド＆公開し、次回起動から反映される。
+
+> さらに起動を詰めたい場合は **Settings ▸ Codespaces ▸ Set up prebuild**（任意）も併用できますが、
+> 上記のビルド済みイメージだけでも十分高速です。
 
 ## Python の利用
 
