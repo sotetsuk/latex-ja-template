@@ -41,9 +41,10 @@ jobs:
 
       - name: Report image size
         run: |
+          SIZE=$(docker images latex-ja-template:ci --format '{{.Size}}')
+          echo "Devcontainer image size: ${SIZE}"
           echo "### Devcontainer image size" >> "$GITHUB_STEP_SUMMARY"
-          docker images latex-ja-template:ci \
-            --format '- `{{.Repository}}:{{.Tag}}` = **{{.Size}}**' >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`latex-ja-template:ci\` = **${SIZE}**" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Show installed scheme / collections
         run: docker run --rm latex-ja-template:ci bash -lc "tlmgr info --only-installed 2>/dev/null | grep -E '(collection|scheme)-' | sort -u || true"

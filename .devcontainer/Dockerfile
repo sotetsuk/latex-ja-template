@@ -59,7 +59,7 @@ RUN set -eux; \
         `# --- フォント基盤（fontspec/unicode-math/microtype/T1 EC 用）---` \
         fontspec lm lm-math ec luaotfload lualatex-math \
         `# --- 共通ユーティリティ（依存として自動解決されない .sty）---` \
-        xkeyval ifoddpage \
+        xkeyval ifoddpage relsize \
         `# --- 数式 ---` \
         amsmath amsfonts amscls mathtools unicode-math \
         `# --- 図・色・表・レイアウト（array/longtable/tabularx/multicol/bm は tools）---` \
