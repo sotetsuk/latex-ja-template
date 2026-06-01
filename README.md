@@ -21,6 +21,10 @@ LaTeX 執筆環境テンプレートです。
 `numpy` / `matplotlib` は起動時に自動インストールされます。追加したいパッケージは
 `requirements.txt` に書けば次回起動時に入ります。
 
+初回セットアップ（パッケージのインストールと図生成）はエディタの起動を妨げないよう
+**背景で実行**されます。進捗・エラーは `/tmp/postcreate.log` で確認できます
+（`figures/sample.png` は同梱済みなので、完了前でも `main.tex` はコンパイルできます）。
+
 ```bash
 python3 scripts/make_figure.py   # figures/sample.png を再生成
 ```
