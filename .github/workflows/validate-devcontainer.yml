@@ -1,0 +1,70 @@
+name: Validate devcontainer image
+
+# .devcontainer（Dockerfile / texlive.profile）の変更が「必要な機能」を損なって
+# いないかを PR 上で検証する。イメージを実際にビルドし、その中で
+#   1) tests/run-tests.sh（パッケージマトリクス + 統合ショーケース）
+#   2) main.tex の LuaLaTeX ビルド
+# を実行する。run-tests.sh は統合ショーケースのビルド失敗のみ exit 1 とするため、
+# 主要パッケージの組み合わせが壊れると CI が落ちる（= 機能回帰のゲート）。
+# 個別パッケージの可否マトリクスは artifact の REPORT.md で確認できる。
+#
+# build-image.yml（GHCR への publish）は main への push 時のみ動くため、
+# PR 段階の検証はこのワークフローが担う。ローカルに Docker が無くても CI で確認可能。
+on:
+  pull_request:
+    paths:
+      - '.devcontainer/Dockerfile'
+      - '.devcontainer/texlive.profile'
+      - 'tests/**'
+      - 'main.tex'
+      - '.github/workflows/validate-devcontainer.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      # PR 検証は単一アーキ（amd64）でビルドしてランナーへ load する（高速）。
+      # マルチアーチの最終ビルドは build-image.yml が main で行う。
+      - uses: docker/build-push-action@v6
+        with:
+          context: .devcontainer
+          file: .devcontainer/Dockerfile
+          load: true
+          tags: latex-ja-template:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Report image size
+        run: |
+          echo "### Devcontainer image size" >> "$GITHUB_STEP_SUMMARY"
+          docker images latex-ja-template:ci \
+            --format '- `{{.Repository}}:{{.Tag}}` = **{{.Size}}**' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Show installed scheme / collections
+        run: docker run --rm latex-ja-template:ci bash -lc "tlmgr info --only-installed 2>/dev/null | grep -E '(collection|scheme)-' | sort -u || true"
+
+      # 配布イメージの既定ユーザーは非 root (vscode)。マウントした作業ツリーへ
+      # 書き込めるよう root で実行する（test-packages.yml と同じ理由）。
+      - name: Run package tests and build main.tex
+        run: |
+          docker run --rm --user root \
+            -v "${{ github.workspace }}":/work -w /work \
+            latex-ja-template:ci \
+            bash -lc 'bash tests/run-tests.sh && latexmk main.tex'
+
+      - name: Upload report & PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: devcontainer-validation
+          path: |
+            tests/REPORT.md
+            tests/**/out/*.pdf
+            out/*.pdf
+            tests/.work/*.log
+          include-hidden-files: true

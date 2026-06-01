@@ -2,7 +2,7 @@
 #
 # 日本語 LaTeX 執筆用 Dev Container
 # - ベース: debian:bookworm-slim（軽量）
-# - TeX Live: install-tl + texlive.profile（バランス型）
+# - TeX Live: install-tl + texlive.profile（scheme-infraonly + 必要パッケージのみ・最小）
 # - Python3 + pip（numpy 等を後から追加可能）
 #
 FROM debian:bookworm-slim
@@ -11,6 +11,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8
 
 # ---- OS パッケージ ----------------------------------------------------------
+# wget/xzdec: install-tl と tlmgr のダウンロードに必要
+# curl/unzip: 学会クラスの取得・展開（tests/societies）に必要
+# perl: latexmk / TeX Live スクリプト, fontconfig: フォント解決
+# python3*: minted v3 (latexminted) と図生成 (numpy/matplotlib)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         curl \
@@ -18,7 +22,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         perl \
         fontconfig \
-        gnupg \
         xzdec \
         unzip \
         python3 \
@@ -43,6 +46,43 @@ RUN set -eux; \
     echo "export PATH=${TLBIN}:\$PATH" > /etc/profile.d/texlive.sh; \
     ln -s "${TLBIN}"/* /usr/local/bin/ || true
 ENV PATH=/usr/local/texlive/2025/bin/x86_64-linux:/usr/local/texlive/2024/bin/x86_64-linux:$PATH
+
+# ---- 必要パッケージのみを明示インストール ----------------------------------
+# scheme-infraonly には latex 本体すら入らないため、日本語執筆・CI テスト
+# (tests/packages.list) ・学会スモークテストに必要なトップレベルパッケージを
+# 列挙して入れる。依存（kpathsea / l3kernel / hyphenation / 各種 .sty 等）は
+# tlmgr が自動解決する。広いコレクションを丸ごと入れないことでイメージを縮小する。
+RUN set -eux; \
+    tlmgr install \
+        `# --- latex 本体・エンジン・ビルド基盤 ---` \
+        latex latex-bin latexmk luatex \
+        `# --- 日本語（upLaTeX/dvipdfmx 系・クラス）---` \
+        platex uplatex ptex ptex-fontmaps jsclasses jlreq dvipdfmx \
+        `# --- 日本語組版・フォント ---` \
+        luatexja japanese-otf japanese-otf-uptex haranoaji \
+        `# --- フォント基盤（fontspec/unicode-math/microtype 用）---` \
+        fontspec lm lm-math \
+        `# --- 数式 ---` \
+        amsmath amsfonts amscls mathtools unicode-math \
+        `# --- 図・色・表・レイアウト（array/longtable/tabularx/multicol/bm は tools）---` \
+        graphics tools xcolor wrapfig float booktabs multirow makecell \
+        geometry setspace fancyhdr titlesec enumitem \
+        `# --- キャプション・参照・コード ---` \
+        caption hyperref url cleveref listings fancyvrb minted ulem \
+        csquotes microtype \
+        `# --- 単位・アルゴリズム・囲み ---` \
+        siunitx algorithm2e algorithmicx algorithms tcolorbox \
+        `# --- 描画（tikz は pgf に含まれる）---` \
+        pgf pgfplots \
+        `# --- 参考文献 ---` \
+        natbib biblatex biber \
+    ; \
+    `# フォーマット（lualatex/uplatex 等）は tlmgr install が自動生成するが、` \
+    `# 念のため全生成しておく（周辺フォーマットの失敗ではビルドを止めない）。` \
+    fmtutil-sys --all || true; \
+    `# upLaTeX+dvipdfmx 用に日本語フォント（原ノ味）をマップへ設定する` \
+    kanji-config-updmap-sys haranoaji; \
+    mktexlsr
 
 # ---- 非 root ユーザー（Codespaces / VSCode 互換）---------------------------
 ARG USERNAME=vscode
