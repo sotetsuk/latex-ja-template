@@ -43,7 +43,7 @@ lua up ::: cleveref ::: \usepackage{hyperref}\usepackage{cleveref} ::: \begin{eq
 # ===== コード・整形 =====
 lua up ::: listings ::: \usepackage{listings} ::: <NL>\begin{lstlisting}<NL>x = 1<NL>\end{lstlisting} ::: -
 lua up ::: fancyvrb ::: \usepackage{fancyvrb} ::: <NL>\begin{Verbatim}<NL>code line<NL>\end{Verbatim} ::: -
-lua up ::: minted ::: \usepackage{minted} ::: <NL>\begin{minted}{python}<NL>print("hi")<NL>\end{minted} ::: 要 Pygments + -shell-escape（既定では失敗する想定）
+lua up ::: minted ::: \usepackage{minted} ::: <NL>\begin{minted}{python}<NL>print("hi")<NL>\end{minted} ::: minted v3 (latexminted) で既定動作。Pygments 手動導入や --shell-escape は不要
 lua up ::: ulem ::: \usepackage[normalem]{ulem} ::: \sout{取り消し}\uline{下線} ::: -
 lua up ::: csquotes ::: \usepackage{csquotes} ::: \enquote{引用文} ::: -
 lua up ::: microtype ::: \usepackage{microtype} ::: マイクロタイポグラフィ。 ::: upLaTeX→dvipdfmx では機能制限あり
