@@ -6,7 +6,7 @@ LaTeX 執筆環境テンプレートです。
 - ✅ ブラウザだけで日本語 LaTeX を執筆（LaTeX Workshop 自動インストール）
 - ✅ **LuaLaTeX** で `main.tex`（図・数式・表・参考文献入り）を即コンパイル
 - ✅ TeX Live を含む Dev Container イメージを GHCR に公開済みで、起動時に TeX Live のインストールが走らない
-- ✅ Python3 + pip（`numpy` / `matplotlib` 同梱）
+- ✅ Python3 + pip 利用可（必要なライブラリは各自で追加）
 
 ## 使い方
 
@@ -18,11 +18,13 @@ LaTeX 執筆環境テンプレートです。
 
 ## Python
 
-`numpy` / `matplotlib` は起動時に自動インストールされます。追加したいパッケージは
-`requirements.txt` に書けば次回起動時に入ります。
+Python3 / pip が使えます。ライブラリの自動インストールは行いません（テンプレートの責務外）。
+必要なものは各自で入れてください。サンプル図 `figures/sample.png` は生成済みで同梱しているため、
+そのままビルドできます。図を作り直したい場合のみ、依存を入れてからスクリプトを実行します。
 
 ```bash
-python3 scripts/make_figure.py   # figures/sample.png を再生成
+pip3 install -r requirements.txt        # numpy / matplotlib（任意）
+python3 scripts/make_figure.py          # figures/sample.png を再生成
 ```
 
 ## テスト

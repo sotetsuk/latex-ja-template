@@ -19,6 +19,5 @@
       }
     }
   },
-  "postCreateCommand": "pip3 install --break-system-packages --no-warn-script-location -r requirements.txt && python3 scripts/make_figure.py",
   "remoteUser": "vscode"
 }
