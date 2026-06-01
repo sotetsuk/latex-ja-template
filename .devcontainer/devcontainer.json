@@ -19,9 +19,6 @@
       }
     }
   },
-  // 重いセットアップ（numpy/matplotlib の pip + 図生成）は nohup で背景実行し、
-  // エディタの起動をブロックしない。進捗・エラーは /tmp/postcreate.log で確認できる。
-  // figures/sample.png は git 管理済みなので、セットアップ完了前でも main.tex は即コンパイル可。
-  "postCreateCommand": "nohup bash -c 'pip3 install --break-system-packages --no-warn-script-location -r requirements.txt && python3 scripts/make_figure.py && echo \"[postCreate] done\"' > /tmp/postcreate.log 2>&1 < /dev/null &",
+  "postCreateCommand": "pip3 install --break-system-packages --no-warn-script-location -r requirements.txt && python3 scripts/make_figure.py",
   "remoteUser": "vscode"
 }
