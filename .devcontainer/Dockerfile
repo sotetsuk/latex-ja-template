@@ -56,8 +56,10 @@ RUN set -eux; \
         platex uplatex ptex ptex-fontmaps jsclasses jlreq dvipdfmx \
         `# --- 日本語組版・フォント（otf は upTeX 用ファイルも japanese-otf に同梱）---` \
         luatexja japanese-otf haranoaji \
-        `# --- フォント基盤（fontspec/unicode-math/microtype 用）---` \
-        fontspec lm lm-math \
+        `# --- フォント基盤（fontspec/unicode-math/microtype/T1 EC 用）---` \
+        fontspec lm lm-math ec luaotfload lualatex-math \
+        `# --- 共通ユーティリティ（依存として自動解決されない .sty）---` \
+        xkeyval ifoddpage \
         `# --- 数式 ---` \
         amsmath amsfonts amscls mathtools unicode-math \
         `# --- 図・色・表・レイアウト（array/longtable/tabularx/multicol/bm は tools）---` \
