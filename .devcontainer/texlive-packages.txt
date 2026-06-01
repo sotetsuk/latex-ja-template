@@ -1,0 +1,88 @@
+# TeX Live 追加パッケージ（scheme-infraonly の上に明示インストールする）
+# 1 行 1 パッケージ。`#` で始まる行と空行は無視される（Dockerfile が grep で除去し
+# tlmgr install へ渡す）。依存（kpathsea / l3kernel / hyphenation 等）は tlmgr が
+# 自動解決するので、ここにはトップレベルのみ書けばよい。
+# main.tex と tests/packages.list に対応を合わせて増減する。
+
+# --- latex 本体・エンジン・ビルド基盤 ---
+latex
+latex-bin
+latexmk
+luatex
+
+# --- 日本語（upLaTeX/dvipdfmx 系・クラス）---
+platex
+uplatex
+ptex
+ptex-fontmaps
+jsclasses
+jlreq
+dvipdfmx
+
+# --- 日本語組版・フォント（otf は upTeX 用ファイルも japanese-otf に同梱）---
+luatexja
+japanese-otf
+haranoaji
+
+# --- フォント基盤（fontspec / unicode-math / microtype / T1 EC 用）---
+fontspec
+lm
+lm-math
+ec
+luaotfload
+lualatex-math
+
+# --- 共通ユーティリティ（依存として自動解決されない .sty）---
+xkeyval
+ifoddpage
+relsize
+
+# --- 数式 ---
+amsmath
+amsfonts
+amscls
+mathtools
+unicode-math
+
+# --- 図・色・表・レイアウト（array / longtable / tabularx / multicol / bm は tools）---
+graphics
+tools
+xcolor
+wrapfig
+float
+booktabs
+multirow
+makecell
+geometry
+setspace
+fancyhdr
+titlesec
+enumitem
+
+# --- キャプション・参照・コード ---
+caption
+hyperref
+url
+cleveref
+listings
+fancyvrb
+minted
+ulem
+csquotes
+microtype
+
+# --- 単位・アルゴリズム・囲み ---
+siunitx
+algorithm2e
+algorithmicx
+algorithms
+tcolorbox
+
+# --- 描画（tikz は pgf に含まれる）---
+pgf
+pgfplots
+
+# --- 参考文献 ---
+natbib
+biblatex
+biber
