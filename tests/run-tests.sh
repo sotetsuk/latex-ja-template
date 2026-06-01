@@ -249,7 +249,7 @@ echo ">>> REPORT.md を生成中..."
   [ "$found_fail" = "0" ] && echo "（なし：対象パッケージはすべてコンパイルに成功しました）"
   echo
   echo "### 補足"
-  echo "- \`tikz\`/\`pgf\`/\`pgfplots\`/\`tcolorbox\` は配布イメージに \`collection-pictures\` が含まれているため利用できます。"
+  echo "- \`tikz\`/\`pgf\`/\`pgfplots\`/\`tcolorbox\` は配布イメージに \`pgf\`/\`pgfplots\` を明示導入しているため利用できます。"
   echo "- \`minted\` は TeX Live 同梱の minted v3（\`latexminted\` + 制限付き shell-escape）により既定で動作します。"
   echo "  旧来の \`pygmentize\`（Pygments）の手動導入や \`-shell-escape\` の明示指定は不要です。"
   echo "- \`biblatex\` はパッケージ読込のみ検証しています。実際の文献処理には biber（上表の環境を参照。配布イメージには同梱）が必要です。"
