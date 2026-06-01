@@ -1,0 +1,66 @@
+# TeX Live packages installed on top of scheme-basic + collection-langjapanese.
+# Keep this list aligned with main.tex and tests/packages.list.
+
+latexmk
+
+# Math
+amsmath
+amsfonts
+amscls
+mathtools
+bm
+unicode-math
+
+# Figures, colors, and drawing
+graphics
+xcolor
+wrapfig
+float
+pgf
+pgfplots
+
+# Tables
+booktabs
+tools
+multirow
+makecell
+
+# Layout and text
+geometry
+setspace
+fancyhdr
+titlesec
+enumitem
+caption
+subcaption
+url
+hyperref
+cleveref
+ulem
+csquotes
+microtype
+
+# Code and verbatim
+listings
+fancyvrb
+minted
+latexminted
+
+# Units, algorithms, and boxes
+siunitx
+algorithm2e
+algorithms
+algorithmicx
+tcolorbox
+
+# Bibliography
+natbib
+biblatex
+biber
+
+# Fonts and Japanese-specific extras used by tests/showcases
+fontspec
+luatexja
+lmodern
+japanese-otf
+platex-tools

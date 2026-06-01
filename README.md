@@ -7,7 +7,7 @@ LaTeX 執筆環境テンプレートです。
 - ✅ VS Code 拡張 **LaTeX Workshop** を自動インストール
 - ✅ **LuaLaTeX** で `main.tex` を新規作成・コンパイル
 - ✅ 人工知能学会・情報処理学会・電子情報通信学会の主要クラスの**ビルド可否を CI でスモークテスト**（投稿テンプレートとしては提供しません）
-- ✅ 軽量な TeX Live 構成（`scheme-basic` + 必要コレクションのみ、約 1.5GB）
+- ✅ 軽量な TeX Live 構成（`scheme-basic` + 日本語コレクション + 必要パッケージのみ）
 - ✅ Python3 + pip（`numpy` / `matplotlib` 同梱、追加も自由）
 - ✅ 画像・数式・表・参考文献入りの `main.tex` で即執筆
 
@@ -37,6 +37,7 @@ latexmk main.tex      # -> out/main.pdf（LuaLaTeX）
 ビルドし GHCR に公開**しています（[`.github/workflows/build-image.yml`](.github/workflows/build-image.yml)）。
 `devcontainer.json` はそのイメージ（`ghcr.io/<owner>/<repo>:latest`）を **pull するだけ**で、
 起動時に TeX Live のインストールは走りません。テンプレートから作った各リポジトリも同様に高速です。
+イメージサイズは `Build devcontainer image` ワークフローの Summary で確認できます。
 
 ### このテンプレートを自分用にフォーク／流用する場合
 1. `.devcontainer/devcontainer.json` の `image` を **自分のリポジトリ名**に書き換える
@@ -77,7 +78,7 @@ pip3 install --break-system-packages scipy   # パッケージ追加例
 ## ディレクトリ構成
 
 ```
-.devcontainer/   # Dev Container 定義（Dockerfile / texlive.profile / devcontainer.json）
+.devcontainer/   # Dev Container 定義（Dockerfile / TeX Live 設定 / devcontainer.json）
 .vscode/         # LaTeX Workshop レシピ・推奨拡張
 main.tex         # LuaLaTeX サンプル（図・数式・表・参考文献）
 references.bib   # 参考文献データベース
