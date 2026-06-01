@@ -1,4 +1,0 @@
-# 図の再生成（scripts/make_figure.py）に使う任意の Python パッケージ。
-# 自動インストールはしない。必要なときに `pip3 install -r requirements.txt`。
-numpy
-matplotlib

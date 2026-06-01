@@ -19,13 +19,8 @@ LaTeX 執筆環境テンプレートです。
 ## Python
 
 Python3 / pip が使えます。ライブラリの自動インストールは行いません（テンプレートの責務外）。
-必要なものは各自で入れてください。サンプル図 `figures/sample.png` は生成済みで同梱しているため、
-そのままビルドできます。図を作り直したい場合のみ、依存を入れてからスクリプトを実行します。
-
-```bash
-pip3 install -r requirements.txt        # numpy / matplotlib（任意）
-python3 scripts/make_figure.py          # figures/sample.png を再生成
-```
+図やデータ処理に必要なものは各自で `pip3 install ...` してください。
+サンプル図 `figures/sample.png` は生成済みで同梱しているため、そのままビルドできます。
 
 ## テスト
 
