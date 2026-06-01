@@ -3,18 +3,25 @@
 # 日本語 LaTeX 執筆用 Dev Container
 # - ベース: debian:bookworm-slim（軽量）
 # - TeX Live: install-tl + texlive.profile（scheme-infraonly + 必要パッケージのみ・最小）
-# - Python3 + pip（numpy 等を後から追加可能）
+# - Python3 本体のみ（pip/venv は廃止）。ライブラリは uv で起動時に導入。
 #
 FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8
 
+# ---- uv（Python パッケージマネージャ）-------------------------------------
+# pip/venv は廃止し、ライブラリ（numpy/matplotlib 等）は起動時に uv で入れる。
+# python3 本体は minted v3 (latexminted) がビルド時に PATH 上の python3 を
+# 要求するため apt で残す。uv はマルチアーチ対応のため公式イメージから COPY。
+COPY --from=ghcr.io/astral-sh/uv:0.11.17 /uv /usr/local/bin/uv
+
 # ---- OS パッケージ ----------------------------------------------------------
 # wget/xzdec: install-tl と tlmgr のダウンロードに必要
 # curl/unzip: 学会クラスの取得・展開（tests/societies）に必要
 # perl: latexmk / TeX Live スクリプト, fontconfig: フォント解決
-# python3*: minted v3 (latexminted) と図生成 (numpy/matplotlib)
+# python3: minted v3 (latexminted) がビルド時に要求（素の stdlib で十分）。
+#          ライブラリ追加は uv が担うため pip/python3-venv は入れない。
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
         curl \
@@ -25,8 +32,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         xzdec \
         unzip \
         python3 \
-        python3-pip \
-        python3-venv \
         sudo \
     && rm -rf /var/lib/apt/lists/*
 

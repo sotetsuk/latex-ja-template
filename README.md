@@ -8,7 +8,7 @@ LaTeX 執筆環境テンプレートです。
 - ✅ **LuaLaTeX** で `main.tex` を新規作成・コンパイル
 - ✅ 人工知能学会・情報処理学会・電子情報通信学会の主要クラスの**ビルド可否を CI でスモークテスト**（投稿テンプレートとしては提供しません）
 - ✅ 軽量な TeX Live 構成（`scheme-infraonly` + 必要パッケージのみを明示インストール。**約 590MB**で、従来の約 1.5GB から大幅に縮小。実サイズは CI のビルドログで確認可能）
-- ✅ Python3 + pip（`numpy` / `matplotlib` 同梱、追加も自由）
+- ✅ Python3 + [uv](https://docs.astral.sh/uv/)（`numpy` / `matplotlib` は起動時に自動導入、追加も自由）
 - ✅ 画像・数式・表・参考文献入りの `main.tex` で即執筆
 
 ## 使い方
@@ -54,11 +54,11 @@ latexmk main.tex      # -> out/main.pdf（LuaLaTeX）
 
 ## Python の利用
 
-`numpy` と `matplotlib` は起動時に自動インストールされます。
+`numpy` と `matplotlib` は起動時に [uv](https://docs.astral.sh/uv/) で自動インストールされます。
 
 ```bash
-python3 scripts/make_figure.py          # figures/sample.png を再生成
-pip3 install --break-system-packages scipy   # パッケージ追加例
+python3 scripts/make_figure.py                              # figures/sample.png を再生成
+sudo uv pip install --system --break-system-packages scipy  # パッケージ追加例
 ```
 
 追加したいパッケージは `requirements.txt` に書けば次回起動時に入ります。
