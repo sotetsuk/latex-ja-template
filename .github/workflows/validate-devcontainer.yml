@@ -22,6 +22,8 @@ on:
 
 jobs:
   validate:
+    # テンプレート本体でのみ実行。クローン側では走らせない。
+    if: github.repository == 'sotetsuk/latex-ja-template'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

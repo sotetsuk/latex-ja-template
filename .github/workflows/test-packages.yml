@@ -14,6 +14,8 @@ on:
 
 jobs:
   test:
+    # テンプレート本体でのみ実行。クローン側では走らせない（イメージ未公開のため）。
+    if: github.repository == 'sotetsuk/latex-ja-template'
     runs-on: ubuntu-latest
     permissions:
       contents: read

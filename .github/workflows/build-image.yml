@@ -17,6 +17,8 @@ env:
 
 jobs:
   build:
+    # テンプレート本体でのみ実行。クローン側では配布イメージを再ビルドしない。
+    if: github.repository == 'sotetsuk/latex-ja-template'
     runs-on: ubuntu-latest
     permissions:
       contents: read
