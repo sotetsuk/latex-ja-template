@@ -1,0 +1,46 @@
+name: Test LaTeX packages
+
+# 配布イメージ（GHCR の devcontainer イメージ）の中で、対応想定パッケージを
+# LuaLaTeX / upLaTeX で網羅的にコンパイルし、サポート可否マトリクスを生成する。
+# 実行はこの CI 上でのみ行う想定。
+#
+# 前提: build-image.yml で ghcr.io/<repo>:latest が公開済みであること。
+on:
+  push:
+    paths:
+      - 'tests/**'
+      - '.github/workflows/test-packages.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    container:
+      image: ghcr.io/${{ github.repository }}:latest
+      # 配布イメージの既定ユーザーは非 root (vscode) のため、Actions ランナーの
+      # 作業ディレクトリ(/__w)へ書き込めず checkout が EACCES で失敗する。root で実行する。
+      options: --user root
+      # イメージが private の場合は GHCR への認証が必要（public なら不要）。
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show TeX Live collections
+        run: tlmgr info --only-installed 2>/dev/null | grep -E '(collection|scheme)-' | sort -u || true
+
+      - name: Run package tests
+        run: bash tests/run-tests.sh
+
+      - name: Upload report & showcase PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-package-test
+          path: |
+            tests/REPORT.md
+            tests/**/out/*.pdf
