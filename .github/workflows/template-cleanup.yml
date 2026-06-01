@@ -1,0 +1,50 @@
+name: Template cleanup
+
+# 「Use this template」で作られた新規リポジトリでのみ初回 push 時に走り、
+# テンプレート保守用のファイル（tests/ や保守用 workflow）を削除して
+# コミットし、最後にこの workflow 自身も消す。
+#
+# テンプレート本体（sotetsuk/latex-ja-template）では if 条件で skip される。
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    # テンプレート本体では実行しない。クローン側でのみ走る。
+    if: github.repository != 'sotetsuk/latex-ja-template'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove template maintenance files
+        run: |
+          set -eux
+          # テンプレート保守用（クローン側では不要）。
+          rm -rf tests
+          rm -f .github/workflows/test-packages.yml
+          rm -f .github/workflows/build-image.yml
+          rm -f .github/workflows/validate-devcontainer.yml
+          # README の「## テスト」節（tests/ への参照）を削除し、壊れたリンクを残さない。
+          if [ -f README.md ]; then
+            awk '/^## テスト/{skip=1} /^## ライセンス/{skip=0} skip!=1{print}' README.md > README.tmp
+            mv README.tmp README.md
+          fi
+          # 最後にこの workflow 自身も削除する。
+          rm -f .github/workflows/template-cleanup.yml
+
+      - name: Commit cleanup
+        run: |
+          set -eux
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          # 既にクリーン済みなら何もしない（再 push 等での失敗回避）。
+          if git diff --staged --quiet; then
+            echo "Nothing to clean up."
+          else
+            git commit -m "chore: remove template maintenance files"
+            git push
+          fi
