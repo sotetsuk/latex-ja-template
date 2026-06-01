@@ -1,0 +1,23 @@
+% 電子情報通信学会（IEICE）論文サンプル
+% エンジン: upLaTeX + dvipdfmx（この階層の .latexmkrc が設定済み）
+% ビルド:  cd templates/ieice && latexmk sample.tex   ->  out/sample.pdf
+%
+% 事前に scripts/fetch-templates.sh を実行して ieicej.cls を取得してください。
+% クラス名・オプションは配布版により異なります（下記は一般的な例）。
+\documentclass[paper]{ieicej}
+
+\jtitle{電子情報通信学会サンプル原稿}
+\jauthor{山田 太郎}{やまだ たろう}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+これは電子情報通信学会テンプレートの最小サンプルです。
+取得した \texttt{ieicej.cls} のバージョンに合わせて調整してください。
+\end{abstract}
+
+\section{はじめに}
+upLaTeX + dvipdfmx でコンパイルされます。
+
+\end{document}

@@ -1,0 +1,37 @@
+# ===== LaTeX ビルド成果物 =====
+out/
+*.aux
+*.bbl
+*.blg
+*.log
+*.toc
+*.lof
+*.lot
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.dvi
+*.xdv
+*.nav
+*.snm
+*.vrb
+
+# PDF（必要ならコメントアウトして追跡）
+*.pdf
+
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ===== 取得した学会クラス（再配布回避のため追跡しない）=====
+# fetch-templates.sh で取得した配布物一式。sample.tex / .latexmkrc / README.md は追跡する。
+templates/*/*
+!templates/*/sample.tex
+!templates/*/.latexmkrc
+!templates/README.md
+
+# ===== OS / エディタ =====
+.DS_Store

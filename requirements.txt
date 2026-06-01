@@ -1,0 +1,4 @@
+# Python パッケージ（postCreateCommand で自動インストール）
+# 必要に応じて追記し、`pip3 install -r requirements.txt` で反映。
+numpy
+matplotlib

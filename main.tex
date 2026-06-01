@@ -1,0 +1,74 @@
+% =============================================================
+%  日本語 LaTeX テンプレート（LuaLaTeX + jlreq）
+%  ビルド: latexmk main.tex   →   out/main.pdf
+%  （VSCode では保存時に自動ビルド。レシピ "LuaLaTeX (latexmk)"）
+% =============================================================
+\documentclass[lualatex,paper=a4,fontsize=10.5pt]{jlreq}
+
+% --- パッケージ ---
+\usepackage{luatexja}          % 日本語組版（jlreq が読み込むが明示）
+\usepackage{amsmath,amssymb}   % 数式
+\usepackage{graphicx}          % 画像の取り込み
+\usepackage{booktabs}          % きれいな表
+\usepackage[hidelinks]{hyperref}
+
+\title{日本語 LaTeX テンプレート}
+\author{あなたの名前 \\ 所属大学・研究室}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+これは GitHub Codespaces 上で日本語論文を執筆するためのテンプレートです。
+LuaLaTeX によるコンパイル、画像・数式・表・参考文献を含む構成をすぐに利用できます。
+\end{abstract}
+
+\section{はじめに}
+本テンプレートでは LuaLaTeX エンジンと \texttt{jlreq} クラスを用いて、
+日本語の文章を快適に組版できます。引用は \cite{knuth1984} のように記述します。
+
+\section{数式}
+インライン数式 $E = mc^2$ も、別行立ての数式も扱えます。
+\begin{equation}
+  \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}.
+  \label{eq:gauss}
+\end{equation}
+式~\eqref{eq:gauss} はガウス積分です。
+
+\section{図}
+図~\ref{fig:sample} は \texttt{scripts/make\_figure.py}（numpy + matplotlib）で
+生成したサンプル画像です。Python の動作確認も兼ねています。
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.7\linewidth]{figures/sample.png}
+  \caption{numpy/matplotlib で生成したサンプル図。}
+  \label{fig:sample}
+\end{figure}
+
+\section{表}
+\begin{table}[t]
+  \centering
+  \caption{サンプルの表。}
+  \label{tab:sample}
+  \begin{tabular}{lcc}
+    \toprule
+    手法 & 精度 & 速度 \\
+    \midrule
+    手法A & 0.91 & 速い \\
+    手法B & 0.95 & 普通 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{おわりに}
+このファイルを編集して、すぐに執筆を始めてください。
+国内学会（人工知能学会・情報処理学会・電子情報通信学会）の投稿用テンプレートは
+\texttt{templates/} 以下に用意しています（\texttt{scripts/fetch-templates.sh} で
+クラスファイルを取得してから利用します）。
+
+\begin{thebibliography}{9}
+  \bibitem{knuth1984} D.~E.~Knuth, \textit{The \TeX book}, Addison-Wesley, 1984.
+\end{thebibliography}
+
+\end{document}

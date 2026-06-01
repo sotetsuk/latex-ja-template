@@ -1,0 +1,66 @@
+{
+  // ===== LaTeX Workshop =====
+  // 出力は out/ に分離（リポジトリを汚さない）
+  "latex-workshop.latex.outDir": "out",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+
+  // ---- ビルドツール ----
+  // latexmk が各ディレクトリの .latexmkrc / ルートの latexmkrc を読む。
+  "latex-workshop.latex.tools": [
+    {
+      "name": "lualatexmk",
+      "command": "latexmk",
+      "args": [
+        "-lualatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "uplatexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {}
+    }
+  ],
+
+  // ---- レシピ（既定は LuaLaTeX）----
+  // 学会テンプレ（templates/*）は各ディレクトリの .latexmkrc で
+  // uplatex+dvipdfmx が使われるため "upLaTeX" レシピを選ぶ。
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "LuaLaTeX (latexmk)",
+      "tools": ["lualatexmk"]
+    },
+    {
+      "name": "upLaTeX -> dvipdfmx (latexmk)",
+      "tools": ["uplatexmk"]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "lastUsed",
+
+  // ---- ビルド成果物の自動クリーン ----
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", "*.lot",
+    "*.out", "*.toc", "*.acn", "*.acr", "*.alg", "*.glg", "*.glo",
+    "*.gls", "*.fls", "*.log", "*.fdb_latexmk", "*.snm", "*.nav",
+    "*.dvi", "*.xdv", "*.synctex.gz"
+  ],
+
+  // PDF はタブ内ビューアで表示
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // ===== Python =====
+  "python.defaultInterpreterPath": "/usr/bin/python3"
+}
