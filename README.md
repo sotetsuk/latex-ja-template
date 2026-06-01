@@ -27,7 +27,7 @@ python3 scripts/make_figure.py   # figures/sample.png を再生成
 
 ## テスト
 
-主要 LaTeX パッケージの対応可否（LuaLaTeX / upLaTeX）と国内学会クラスのビルドは
+主要 LaTeX パッケージの対応可否（LuaLaTeX / upLaTeX）は
 配布イメージ上で CI 検証しています。詳細は [`tests/`](tests/) を参照。
 
 ## ライセンス

@@ -35,8 +35,7 @@
   ],
 
   // ---- レシピ（既定は LuaLaTeX）----
-  // 学会クラスのビルド確認（tests/societies/*）は各ディレクトリの .latexmkrc で
-  // uplatex+dvipdfmx が使われるため "upLaTeX" レシピを選ぶ。
+  // upLaTeX + dvipdfmx 系の文書をビルドする場合は "upLaTeX" レシピを選ぶ。
   "latex-workshop.latex.recipes": [
     {
       "name": "LuaLaTeX (latexmk)",

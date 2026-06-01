@@ -12,18 +12,15 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # ---- OS パッケージ ----------------------------------------------------------
 # wget/xzdec: install-tl と tlmgr のダウンロードに必要
-# curl/unzip: 学会クラスの取得・展開（tests/societies）に必要
 # perl: latexmk / TeX Live スクリプト, fontconfig: フォント解決
 # python3*: minted v3 (latexminted) と図生成 (numpy/matplotlib)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
-        curl \
         git \
         ca-certificates \
         perl \
         fontconfig \
         xzdec \
-        unzip \
         python3 \
         python3-pip \
         python3-venv \
@@ -43,7 +40,7 @@ RUN set -eux; \
 
 # ---- 必要パッケージのみを明示インストール ----------------------------------
 # scheme-infraonly には latex 本体すら入らないため、日本語執筆・CI テスト
-# (tests/packages.list) ・学会スモークテストに必要なトップレベルパッケージを
+# (tests/packages.list) に必要なトップレベルパッケージを
 # texlive-packages.txt から読み取って入れる。依存（kpathsea / l3kernel /
 # hyphenation / 各種 .sty 等）は tlmgr が自動解決する。広いコレクションを
 # 丸ごと入れないことでイメージを縮小する。

@@ -11,7 +11,6 @@
 | `packages.list` | 検証対象パッケージと機能スニペットの一覧 |
 | `run-tests.sh` | 各パッケージを両エンジンでコンパイルし `REPORT.md` を出力 |
 | `lualatex/showcase.tex` / `uplatex/showcase.tex` | 主要パッケージの統合文書（PDF 生成確認） |
-| `societies/` | 国内学会クラス（IPSJ / JSAI / IEICE）のビルド確認スモークテスト（非致命・投稿テンプレートではない） |
 | `REPORT.md` | CI 生成物（Artifact）。リポジトリにはコミットしない |
 
 ## 実行（GitHub Actions）

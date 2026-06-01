@@ -137,55 +137,6 @@ build_showcase() { # $1=subdir  -> stdout: PASS/FAIL（診断は stderr へ。SH
 SHOW_LUA="$(build_showcase lualatex)"; [ "$SHOW_LUA" = FAIL ] && SHOWCASE_FAIL=1
 SHOW_UP="$(build_showcase uplatex)";   [ "$SHOW_UP" = FAIL ] && SHOWCASE_FAIL=1
 
-# ---- 国内学会クラスのビルド確認（非致命） --------------------------------
-# 学会クラス（ipsj/jsaiac/ieicej）を公式配布元から取得し、各 sample.tex が upLaTeX +
-# dvipdfmx でコンパイルできるかだけを確認する。投稿テンプレートではなくスモークテスト。
-# 取得失敗・ビルド失敗とも REPORT に記録するが、ジョブの成否（exit code）には影響させない。
-echo ">>> 国内学会クラスのビルド確認中..."
-SOC_DIR="$HERE/societies"
-SOC_ORDER=(ipsj jsai ieice)
-declare -A SOC_LABEL=( [ipsj]="情報処理学会 (IPSJ)" [jsai]="人工知能学会 (JSAI)" [ieice]="電子情報通信学会 (IEICE)" )
-declare -A SOC_CLS=( [ipsj]="ipsj.cls" [jsai]="jsaiac.cls" [ieice]="ieicej.cls" )
-declare -A SOC_FETCH SOC_BUILD SOC_NOTE
-soc_build_pass=0
-
-if command -v unzip >/dev/null 2>&1; then
-  SOC_HAS_UNZIP=1
-  bash "$SOC_DIR/fetch-classes.sh" > "$WORK/fetch-classes.log" 2>&1 || true
-else
-  SOC_HAS_UNZIP=0
-fi
-
-build_society() { # $1=society $2=クラスファイル名。結果は SOC_* 連想配列に直接格納（サブシェル不使用）
-  local soc="$1" cls="$2" dir="$SOC_DIR/$1" log="$WORK/society-$1.log"
-  if [ "$SOC_HAS_UNZIP" != "1" ]; then
-    SOC_FETCH["$soc"]="FAIL"; SOC_BUILD["$soc"]="—"; SOC_NOTE["$soc"]="unzip 不在のため取得・展開不可"
-    return
-  fi
-  if [ ! -f "$dir/$cls" ]; then
-    SOC_FETCH["$soc"]="FAIL"; SOC_BUILD["$soc"]="—"
-    SOC_NOTE["$soc"]="$cls 未取得（配布 URL 変更等。fetch-classes.log を参照）"
-    return
-  fi
-  SOC_FETCH["$soc"]="PASS"
-  ( cd "$dir" && latexmk sample.tex ) > "$log" 2>&1
-  if [ -f "$dir/out/sample.pdf" ]; then
-    SOC_BUILD["$soc"]="PASS"; SOC_NOTE["$soc"]=""; ((soc_build_pass++))
-  else
-    SOC_BUILD["$soc"]="FAIL"
-    local r
-    r="$(grep -m1 -E '(LaTeX|Package|Class|pdfTeX|LuaTeX)[^:]* Error' "$log" 2>/dev/null | sed -E 's/^.*Error: ?//; s/^.*Error//')"
-    [ -z "$r" ] && r="(ビルド失敗: society-$soc.log を参照)"
-    SOC_NOTE["$soc"]="$(echo "$r" | tr -d '\r' | cut -c1-90)"
-  fi
-}
-for s in "${SOC_ORDER[@]}"; do
-  build_society "$s" "${SOC_CLS[$s]}"
-  printf '  [soc] %-6s 取得:%-4s ビルド:%s\n' "$s" "${SOC_FETCH[$s]}" "${SOC_BUILD[$s]}"
-done
-
-soc_cell() { case "$1" in PASS) echo "✅";; FAIL) echo "❌";; *) echo "—";; esac; }
-
 # ---- REPORT.md 生成 -------------------------------------------------------
 echo ">>> REPORT.md を生成中..."
 {
@@ -201,7 +152,6 @@ echo ">>> REPORT.md を生成中..."
   echo "| パッケージ PASS | $pass_lua | $pass_up |"
   echo "| パッケージ FAIL | $fail_lua | $fail_up |"
   echo "| 統合ショーケース | $SHOW_LUA | $SHOW_UP |"
-  echo "| 国内学会クラスのビルド | — | ${soc_build_pass}/${#SOC_ORDER[@]} PASS |"
   echo
   echo "## 環境"
   echo
@@ -254,21 +204,6 @@ echo ">>> REPORT.md を生成中..."
   echo "  旧来の \`pygmentize\`（Pygments）の手動導入や \`-shell-escape\` の明示指定は不要です。"
   echo "- \`biblatex\` はパッケージ読込のみ検証しています。実際の文献処理には biber（上表の環境を参照。配布イメージには同梱）が必要です。"
   echo "- \`microtype\` は LuaLaTeX では字形保護・伸縮が機能しますが、upLaTeX→dvipdfmx では機能が制限されます。"
-  echo
-  echo "## 国内学会クラスのビルド確認"
-  echo
-  echo "各学会のクラス（配布物のため未同梱）を \`tests/societies/fetch-classes.sh\` で取得し、"
-  echo "\`tests/societies/<学会>/sample.tex\` を upLaTeX + dvipdfmx でコンパイルできるかだけを確認します。"
-  echo "**これらは投稿テンプレートではなくビルドのスモークテストであり、取得・ビルドの失敗は CI を落としません。**"
-  echo
-  echo "✅ = 成功 / ❌ = 失敗（理由を併記）/ — = 前段失敗のため未実行"
-  echo
-  echo "| 学会 | クラス | 取得 | ビルド | 備考 |"
-  echo "|---|---|:---:|:---:|---|"
-  for s in "${SOC_ORDER[@]}"; do
-    nt="${SOC_NOTE[$s]}"
-    echo "| ${SOC_LABEL[$s]} | \`${SOC_CLS[$s]}\` | $(soc_cell "${SOC_FETCH[$s]}") | $(soc_cell "${SOC_BUILD[$s]}") | $nt |"
-  done
 } > "$REPORT"
 
 # ---- GitHub Actions のサマリにも出力 -------------------------------------
@@ -280,7 +215,6 @@ echo
 echo "=== 完了 ==="
 echo "パッケージ: LuaLaTeX ${pass_lua} PASS / ${fail_lua} FAIL,  upLaTeX ${pass_up} PASS / ${fail_up} FAIL"
 echo "ショーケース: LuaLaTeX ${SHOW_LUA}, upLaTeX ${SHOW_UP}"
-echo "国内学会クラスのビルド: ${soc_build_pass}/${#SOC_ORDER[@]} PASS（非致命）"
 echo "レポート: $REPORT"
 
 # ショーケースが失敗したらジョブを失敗扱いにする（個別パッケージの FAIL では落とさない）
