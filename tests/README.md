@@ -16,7 +16,7 @@
 | `run-tests.sh` | 各パッケージを両エンジンで個別コンパイルし、結果を `REPORT.md` に出力 |
 | `lualatex/showcase.tex` | 主要パッケージをまとめて使う LuaLaTeX 統合文書（PDF 生成確認用） |
 | `uplatex/showcase.tex` | 同上の upLaTeX + dvipdfmx 版 |
-| `REPORT.md` | **生成物**: パッケージ × エンジンのサポート可否マトリクス |
+| `REPORT.md` | **CI 生成物**: パッケージ × エンジンのサポート可否マトリクス（リポジトリ上のファイルは Artifact への案内のみ。固定スナップショットは置かない） |
 
 ## 実行方法（GitHub Actions）
 

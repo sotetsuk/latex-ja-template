@@ -71,6 +71,16 @@ cd templates/ipsj && latexmk sample.tex # upLaTeX + dvipdfmx でビルド
 
 詳細は [`templates/README.md`](templates/README.md) を参照してください。
 
+## 対応パッケージとテスト
+
+主要な LaTeX パッケージが**実際の配布イメージ上で**使えるかを、LuaLaTeX / upLaTeX の
+両方でコンパイルして検証する CI を用意しています（[`tests/`](tests/)）。
+
+- **最新のサポート可否マトリクス・ショーケース PDF**:
+  [Test LaTeX packages ワークフロー](https://github.com/sotetsuk/latex-ja-template/actions/workflows/test-packages.yml)
+  → 最新 run の **Summary**、または **Artifacts (`latex-package-test`)** の `REPORT.md` を参照。
+- 検証内容や対象パッケージの追加方法は [`tests/README.md`](tests/README.md) を参照してください。
+
 ## ディレクトリ構成
 
 ```
@@ -83,6 +93,7 @@ requirements.txt # Python 依存（numpy, matplotlib）
 scripts/         # make_figure.py（図生成）/ fetch-templates.sh（学会テンプレ取得）
 figures/         # 画像（sample.png）
 templates/       # 国内学会テンプレ（ipsj / jsai / ieice）
+tests/           # 対応パッケージの網羅テスト（CI で実行・レポート生成）
 ```
 
 ## トラブルシュート
