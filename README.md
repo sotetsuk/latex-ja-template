@@ -32,5 +32,4 @@ python3 scripts/make_figure.py   # figures/sample.png を再生成
 
 ## ライセンス
 
-このテンプレート自体のファイルは自由に利用・改変できます。
-各学会のクラスファイルおよび投稿規程は、それぞれの学会の規約に従ってください。
+MIT License。詳細は [`LICENSE`](LICENSE) を参照してください。
