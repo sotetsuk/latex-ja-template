@@ -44,3 +44,5 @@ jobs:
           path: |
             tests/REPORT.md
             tests/**/out/*.pdf
+            tests/.work/*.log
+          include-hidden-files: true

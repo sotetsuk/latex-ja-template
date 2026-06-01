@@ -122,13 +122,20 @@ cell() { # $1=result $2=reason
 # ---- 統合ショーケースのビルド --------------------------------------------
 echo ">>> 統合ショーケースをビルド中..."
 SHOWCASE_FAIL=0
-build_showcase() { # $1=subdir
-  local sub="$1" pdf="$HERE/$1/out/showcase.pdf"
-  ( cd "$HERE/$sub" && latexmk showcase.tex ) > "$WORK/showcase-$sub.log" 2>&1
-  if [ -f "$pdf" ]; then echo "PASS"; else echo "FAIL"; SHOWCASE_FAIL=1; fi
+build_showcase() { # $1=subdir  -> stdout: PASS/FAIL（診断は stderr へ。SHOWCASE_FAIL は呼び出し側で設定）
+  local sub="$1" pdf="$HERE/$1/out/showcase.pdf" log="$WORK/showcase-$1.log"
+  ( cd "$HERE/$sub" && latexmk showcase.tex ) > "$log" 2>&1
+  if [ -f "$pdf" ]; then
+    echo "PASS"
+  else
+    echo "FAIL"
+    { echo "---- showcase ($sub) FAILED: tail of $(basename "$log") ----"; tail -40 "$log"; echo "----"; } >&2
+  fi
 }
-SHOW_LUA="$(build_showcase lualatex)"
-SHOW_UP="$(build_showcase uplatex)"
+# 注: $(...) はサブシェルのため、関数内で SHOWCASE_FAIL を立てても親に伝わらない。
+#     戻り値（PASS/FAIL）を見て親シェルでフラグを立てる。
+SHOW_LUA="$(build_showcase lualatex)"; [ "$SHOW_LUA" = FAIL ] && SHOWCASE_FAIL=1
+SHOW_UP="$(build_showcase uplatex)";   [ "$SHOW_UP" = FAIL ] && SHOWCASE_FAIL=1
 
 # ---- REPORT.md 生成 -------------------------------------------------------
 echo ">>> REPORT.md を生成中..."

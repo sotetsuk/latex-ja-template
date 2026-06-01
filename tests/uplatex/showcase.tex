@@ -6,6 +6,10 @@
 % =============================================================
 \documentclass[uplatex,dvipdfmx,a4paper,11pt]{jsarticle}
 
+% minted/fvextra は verbatim 内の " 等に \textquotedbl を用いるため、
+% 8bit エンジン(upLaTeX)では T1 エンコーディングが必要（OT1 には無い）。
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -18,8 +22,10 @@
 \usepackage{siunitx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{cleveref}
+\usepackage{minted}
 
 \lstset{basicstyle=\ttfamily\small, frame=single}
+\setminted{fontsize=\small, frame=single, breaklines=true}
 
 \title{upLaTeX 統合ショーケース}
 \author{latex-ja-template テスト}
@@ -73,11 +79,23 @@
 \section{単位}
 速度 \qty{9.8}{\meter\per\second\squared}、個数 \num{12345.678}。
 
-\section{コード}
+\section{コード（listings）}
 \begin{lstlisting}[language=Python]
 def hello():
     print("Hello, LaTeX")
 \end{lstlisting}
+
+\section{コード（minted）}
+minted はシンタックスハイライトに対応します（upLaTeX$\to$dvipdfmx の経路でも、
+TeX Live 同梱の minted v3 / latexminted により追加設定なしで動作）。
+インラインは \mintinline{python}{lambda x: x+1}。
+\begin{minted}[linenos]{python}
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+\end{minted}
 
 \section{リンク}
 詳細は \href{https://example.com}{example.com} を参照してください。
