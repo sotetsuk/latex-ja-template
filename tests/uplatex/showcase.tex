@@ -1,0 +1,85 @@
+% =============================================================
+%  upLaTeX 統合ショーケース（jsarticle + dvipdfmx）
+%  学会テンプレ系の組版経路（upLaTeX -> dvipdfmx）で主要パッケージをまとめて使用。
+%  dvipdfmx ドライバはクラスオプションで全パッケージに伝播させる。
+%  ビルド: latexmk showcase.tex  →  out/showcase.pdf
+% =============================================================
+\documentclass[uplatex,dvipdfmx,a4paper,11pt]{jsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[margin=25mm]{geometry}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{siunitx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
+\lstset{basicstyle=\ttfamily\small, frame=single}
+
+\title{upLaTeX 統合ショーケース}
+\author{latex-ja-template テスト}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+このドキュメントは、学会テンプレートと同じ upLaTeX $\to$ dvipdfmx の経路で、
+主要パッケージをまとめて使用し PDF まで生成できることを確認します。
+色付きテキスト \textcolor{red}{赤}・\colorbox{yellow}{ハイライト} も使えます。
+
+\section{数式}
+\begin{align}
+  E &= mc^2, \label{eq:e} \\
+  \int_{-\infty}^{\infty} e^{-x^2}\,dx &= \sqrt{\pi}. \label{eq:gauss}
+\end{align}
+\cref{eq:e,eq:gauss} を cleveref で参照しています。集合 $\mathbb{R}$、不等号 $\leq$ も表示できます。
+
+\section{箇条書き}
+\begin{enumerate}[label=(\arabic*), noitemsep]
+  \item enumitem によるラベル変更。
+  \item 項目間隔の調整。
+\end{enumerate}
+
+\section{表}
+\begin{table}[h]
+  \centering
+  \caption{booktabs と array による表。}
+  \label{tab:show}
+  \begin{tabular}{>{\bfseries}l c c}
+    \toprule
+    手法 & 精度 & 速度 \\
+    \midrule
+    手法A & 0.91 & 速い \\
+    手法B & 0.95 & 普通 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\cref{tab:show} を参照。
+
+\section{図}
+\begin{figure}[h]
+  \centering
+  \scalebox{1.0}{\color{blue}\rule{4cm}{2cm}}
+  \caption{graphicx の \texttt{scalebox} と \texttt{rule} で生成した図。}
+  \label{fig:show}
+\end{figure}
+
+\section{単位}
+速度 \qty{9.8}{\meter\per\second\squared}、個数 \num{12345.678}。
+
+\section{コード}
+\begin{lstlisting}[language=Python]
+def hello():
+    print("Hello, LaTeX")
+\end{lstlisting}
+
+\section{リンク}
+詳細は \href{https://example.com}{example.com} を参照してください。
+
+\end{document}

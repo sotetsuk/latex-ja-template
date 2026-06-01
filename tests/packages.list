@@ -1,0 +1,69 @@
+# 検証対象パッケージ一覧
+# 形式:  engines ::: name ::: preamble ::: body ::: note
+#   engines : 空白区切りの対象エンジン（lua = LuaLaTeX, up = upLaTeX）
+#   name    : 表示名（通常はパッケージ名）
+#   preamble: \documentclass の直後に挿入する行（\usepackage や設定。空は -）
+#   body    : document 環境内に挿入して機能を試すスニペット（空は -）
+#   note    : 備考（空は -）
+# 区切りは " ::: "（前後に空白）。# で始まる行と空行は無視。
+#
+# ===== 数式 =====
+lua up ::: amsmath ::: \usepackage{amsmath} ::: \begin{align} a &= b \\ c &= d \end{align} ::: -
+lua up ::: amssymb ::: \usepackage{amssymb} ::: $\mathbb{R}\ \leq\ \varnothing$ ::: -
+lua up ::: amsfonts ::: \usepackage{amsfonts} ::: $\mathfrak{g}\ \mathbb{N}$ ::: -
+lua up ::: amsthm ::: \usepackage{amsthm}\newtheorem{thm}{定理} ::: \begin{thm}内容\end{thm} ::: -
+lua up ::: mathtools ::: \usepackage{mathtools} ::: $a \coloneqq b$ ::: -
+lua up ::: bm ::: \usepackage{bm} ::: $\bm{x}+\bm{y}$ ::: 太字数式
+# ===== 図・色 =====
+lua up ::: graphicx ::: \usepackage{graphicx} ::: \scalebox{1.5}{拡大}\rotatebox{30}{回転} ::: -
+lua up ::: xcolor ::: \usepackage{xcolor} ::: \textcolor{red}{赤}\colorbox{yellow}{黄} ::: -
+lua up ::: wrapfig ::: \usepackage{wrapfig} ::: \begin{wrapfigure}{r}{3cm}\rule{2cm}{2cm}\end{wrapfigure}本文が図に回り込みます。 ::: -
+lua up ::: float ::: \usepackage{float} ::: \begin{figure}[H]\centering\rule{2cm}{1cm}\caption{Hで位置固定}\end{figure} ::: -
+# ===== 表 =====
+lua up ::: booktabs ::: \usepackage{booktabs} ::: \begin{tabular}{ll}\toprule a & b \\ \midrule c & d \\ \bottomrule\end{tabular} ::: -
+lua up ::: array ::: \usepackage{array} ::: \begin{tabular}{>{\bfseries}l c} x & y \\ \end{tabular} ::: 列指定の拡張
+lua up ::: multirow ::: \usepackage{multirow} ::: \begin{tabular}{ll}\multirow{2}{*}{A} & b \\ & c \\ \end{tabular} ::: -
+lua up ::: longtable ::: \usepackage{longtable} ::: \begin{longtable}{ll} a & b \\ c & d \\ \end{longtable} ::: ページをまたぐ表
+lua up ::: tabularx ::: \usepackage{tabularx} ::: \begin{tabularx}{\linewidth}{Xl} 自動幅の長い内容 & 右 \\ \end{tabularx} ::: -
+lua up ::: makecell ::: \usepackage{makecell} ::: \begin{tabular}{l}\makecell{1行目\\2行目}\\ \end{tabular} ::: セル内改行
+# ===== レイアウト・本文 =====
+lua up ::: multicol ::: \usepackage{multicol} ::: \begin{multicols}{2}段組みのテキスト。段組みのテキスト。\end{multicols} ::: -
+lua up ::: geometry ::: \usepackage[margin=25mm]{geometry} ::: 余白を25mmに設定。 ::: -
+lua up ::: setspace ::: \usepackage{setspace} ::: \begin{spacing}{1.5}行間を1.5倍に。\end{spacing} ::: -
+lua up ::: fancyhdr ::: \usepackage{fancyhdr}\pagestyle{fancy}\fancyhead[L]{ヘッダ} ::: 本文テキスト。 ::: -
+lua up ::: titlesec ::: \usepackage{titlesec}\titleformat{\section}{\large\bfseries}{\thesection}{1em}{} ::: \section{節}本文。 ::: 見出しの書式変更
+lua up ::: enumitem ::: \usepackage{enumitem} ::: \begin{itemize}[noitemsep,label=$\bullet$]\item 項目\end{itemize} ::: -
+# ===== キャプション =====
+lua up ::: caption ::: \usepackage{caption}\captionsetup{font=small,labelsep=colon} ::: \begin{figure}[h]\centering\rule{2cm}{1cm}\caption{図の説明}\end{figure} ::: -
+lua up ::: subcaption ::: \usepackage{subcaption} ::: \begin{figure}[h]\begin{subfigure}{0.4\linewidth}\rule{1cm}{1cm}\caption{a}\end{subfigure}\begin{subfigure}{0.4\linewidth}\rule{1cm}{1cm}\caption{b}\end{subfigure}\end{figure} ::: -
+# ===== ハイパーリンク・参照 =====
+lua up ::: hyperref ::: \usepackage[hidelinks]{hyperref} ::: \href{https://example.com}{リンク} ::: -
+lua up ::: url ::: \usepackage{url} ::: \url{https://example.com/path} ::: -
+lua up ::: cleveref ::: \usepackage{hyperref}\usepackage{cleveref} ::: \begin{equation}E=mc^2\label{eq:e}\end{equation}\cref{eq:e} を参照。 ::: -
+# ===== コード・整形 =====
+lua up ::: listings ::: \usepackage{listings} ::: \begin{lstlisting} x = 1 \end{lstlisting} ::: -
+lua up ::: fancyvrb ::: \usepackage{fancyvrb} ::: \begin{Verbatim} code line \end{Verbatim} ::: -
+lua up ::: minted ::: \usepackage{minted} ::: \begin{minted}{python} print("hi") \end{minted} ::: 要 Pygments + -shell-escape（既定では失敗する想定）
+lua up ::: ulem ::: \usepackage[normalem]{ulem} ::: \sout{取り消し}\uline{下線} ::: -
+lua up ::: csquotes ::: \usepackage{csquotes} ::: \enquote{引用文} ::: -
+lua up ::: microtype ::: \usepackage{microtype} ::: マイクロタイポグラフィ。 ::: upLaTeX→dvipdfmx では機能制限あり
+# ===== 単位・アルゴリズム・囲み =====
+lua up ::: siunitx ::: \usepackage{siunitx} ::: \num{12345.678}、\qty{9.8}{\meter\per\second\squared} ::: siunitx v3 想定
+lua up ::: algorithm2e ::: \usepackage[lined]{algorithm2e} ::: \begin{algorithm}[H]\caption{例}\KwIn{x}\KwOut{y}\end{algorithm} ::: -
+lua up ::: algpseudocode ::: \usepackage{algorithm}\usepackage{algpseudocode} ::: \begin{algorithmic}[1]\State $x \gets 1$\end{algorithmic} ::: algorithmicx
+lua up ::: tcolorbox ::: \usepackage{tcolorbox} ::: \begin{tcolorbox}[title=タイトル]中身\end{tcolorbox} ::: 内部で pgf を読み込む
+# ===== 描画（collection-pictures。配布プロファイルに無い可能性大）=====
+lua up ::: pgf ::: \usepackage{pgf} ::: pgf を読み込み。 ::: collection-pictures
+lua up ::: tikz ::: \usepackage{tikz} ::: \begin{tikzpicture}\draw[->] (0,0)--(1,1) node[right]{点};\end{tikzpicture} ::: collection-pictures
+lua up ::: pgfplots ::: \usepackage{pgfplots}\pgfplotsset{compat=1.18} ::: \begin{tikzpicture}\begin{axis}\addplot coordinates {(0,0)(1,1)(2,4)};\end{axis}\end{tikzpicture} ::: collection-pictures
+# ===== 参考文献 =====
+lua up ::: natbib ::: \usepackage{natbib} ::: 引用 \citet{ref1}, \citep{ref2}。 ::: 未定義引用は警告のみ
+lua up ::: biblatex ::: \usepackage{biblatex} ::: biblatex を読み込み（biber/bibtex バックエンドが別途必要）。 ::: biber の有無は環境チェックで確認
+# ===== LuaLaTeX 専用 =====
+lua ::: luatexja ::: \usepackage{luatexja} ::: 日本語と English の混在。 ::: jlreq が暗黙に読み込むが明示的に確認
+lua ::: fontspec ::: \usepackage{fontspec} ::: \textsf{Sans serif text} ::: LuaLaTeX/XeLaTeX 専用
+lua ::: luatexja-fontspec ::: \usepackage{luatexja-fontspec} ::: 日本語フォント切替の枠組み。 ::: -
+lua ::: unicode-math ::: \usepackage{unicode-math} ::: $\symbf{x}=\alpha$ ::: OpenType 数式フォントが必要
+# ===== upLaTeX 専用 =====
+up ::: otf ::: \usepackage{otf} ::: \ajMaru{1}\ajMaru{2} ::: japanese-otf（丸囲み数字など）
+up ::: plext ::: \usepackage{plext} ::: 縦組み等の組版拡張を読み込み。 ::: -
