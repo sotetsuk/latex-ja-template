@@ -40,6 +40,10 @@ compile_one() {
   local log="$dir/${name}.log"
   [ "$pre" = "-" ] && pre=""
   [ "$body" = "-" ] && body=""
+  # <NL> を実改行に変換（verbatim 系は \end{...} が行頭でないと runaway するため）
+  local NL=$'\n'
+  pre="${pre//<NL>/$NL}"
+  body="${body//<NL>/$NL}"
   {
     class_for "$engine"; echo
     [ -n "$pre" ] && printf '%s\n' "$pre"
@@ -56,9 +60,10 @@ compile_one() {
   if [ $rc -eq 0 ]; then
     return 0
   fi
-  # 失敗理由を log から抽出
+  # 失敗理由を log から抽出（Error 行を優先、次に file:line 形式、次に "! " 行）
   local r
-  r="$(grep -m1 -E '\.tex:[0-9]+: ' "$log" 2>/dev/null | sed -E 's/^[^:]*\.tex:[0-9]+: //')"
+  r="$(grep -m1 -E '(LaTeX|Package|Class|pdfTeX|LuaTeX)[^:]* Error' "$log" 2>/dev/null | sed -E 's/^.*Error: ?//; s/^.*Error//')"
+  [ -z "$r" ] && r="$(grep -m1 -E '^(\./)?[^ ]*:[0-9]+: ' "$log" 2>/dev/null | sed -E 's#^(\./)?[^:]*:[0-9]+: ##')"
   [ -z "$r" ] && r="$(grep -m1 -E '^! ' "$log" 2>/dev/null | sed -E 's/^! //')"
   [ -z "$r" ] && r="$(grep -m1 -iE 'not found|cannot|fatal' "$log" 2>/dev/null)"
   [ -z "$r" ] && r="(原因不明: ${name}.log を参照)"

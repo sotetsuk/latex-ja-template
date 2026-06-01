@@ -41,9 +41,9 @@ lua up ::: hyperref ::: \usepackage[hidelinks]{hyperref} ::: \href{https://examp
 lua up ::: url ::: \usepackage{url} ::: \url{https://example.com/path} ::: -
 lua up ::: cleveref ::: \usepackage{hyperref}\usepackage{cleveref} ::: \begin{equation}E=mc^2\label{eq:e}\end{equation}\cref{eq:e} を参照。 ::: -
 # ===== コード・整形 =====
-lua up ::: listings ::: \usepackage{listings} ::: \begin{lstlisting} x = 1 \end{lstlisting} ::: -
-lua up ::: fancyvrb ::: \usepackage{fancyvrb} ::: \begin{Verbatim} code line \end{Verbatim} ::: -
-lua up ::: minted ::: \usepackage{minted} ::: \begin{minted}{python} print("hi") \end{minted} ::: 要 Pygments + -shell-escape（既定では失敗する想定）
+lua up ::: listings ::: \usepackage{listings} ::: <NL>\begin{lstlisting}<NL>x = 1<NL>\end{lstlisting} ::: -
+lua up ::: fancyvrb ::: \usepackage{fancyvrb} ::: <NL>\begin{Verbatim}<NL>code line<NL>\end{Verbatim} ::: -
+lua up ::: minted ::: \usepackage{minted} ::: <NL>\begin{minted}{python}<NL>print("hi")<NL>\end{minted} ::: 要 Pygments + -shell-escape（既定では失敗する想定）
 lua up ::: ulem ::: \usepackage[normalem]{ulem} ::: \sout{取り消し}\uline{下線} ::: -
 lua up ::: csquotes ::: \usepackage{csquotes} ::: \enquote{引用文} ::: -
 lua up ::: microtype ::: \usepackage{microtype} ::: マイクロタイポグラフィ。 ::: upLaTeX→dvipdfmx では機能制限あり
