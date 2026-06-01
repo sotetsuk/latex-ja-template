@@ -58,8 +58,8 @@ RUN set -eux; \
         latex latex-bin latexmk luatex \
         `# --- 日本語（upLaTeX/dvipdfmx 系・クラス）---` \
         platex uplatex ptex ptex-fontmaps jsclasses jlreq dvipdfmx \
-        `# --- 日本語組版・フォント ---` \
-        luatexja japanese-otf japanese-otf-uptex haranoaji \
+        `# --- 日本語組版・フォント（otf は upTeX 用ファイルも japanese-otf に同梱）---` \
+        luatexja japanese-otf haranoaji \
         `# --- フォント基盤（fontspec/unicode-math/microtype 用）---` \
         fontspec lm lm-math \
         `# --- 数式 ---` \
