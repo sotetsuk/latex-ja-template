@@ -20,6 +20,9 @@ jobs:
       packages: read
     container:
       image: ghcr.io/${{ github.repository }}:latest
+      # 配布イメージの既定ユーザーは非 root (vscode) のため、Actions ランナーの
+      # 作業ディレクトリ(/__w)へ書き込めず checkout が EACCES で失敗する。root で実行する。
+      options: --user root
       # イメージが private の場合は GHCR への認証が必要（public なら不要）。
       credentials:
         username: ${{ github.actor }}
