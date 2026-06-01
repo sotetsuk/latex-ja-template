@@ -1,0 +1,20 @@
+% 人工知能学会全国大会（JSAI）スタイルのビルド確認用スモークテスト。
+% 投稿テンプレートではなく、jsaiac が取得できればコンパイルが通ることだけを確認する最小文書。
+% エンジン: upLaTeX + dvipdfmx（この階層の .latexmkrc が設定済み）。
+% スタイルは tests/societies/fetch-classes.sh で取得する（配布物のため未同梱）。
+\documentclass[twocolumn]{jsaiac}
+
+\title{ビルド確認}
+\author{%
+  Test\\
+  \jaddress{神戸大学, test@example.ac.jp}%
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+jsaiac のコンパイル確認。
+\end{abstract}
+\section{確認}
+コンパイルが通ることのみを確認する。
+\end{document}

@@ -16,7 +16,8 @@
 | `run-tests.sh` | 各パッケージを両エンジンで個別コンパイルし、結果を `REPORT.md` に出力 |
 | `lualatex/showcase.tex` | 主要パッケージをまとめて使う LuaLaTeX 統合文書（PDF 生成確認用） |
 | `uplatex/showcase.tex` | 同上の upLaTeX + dvipdfmx 版 |
-| `REPORT.md` | **CI 生成物（Artifact）**: パッケージ × エンジンのサポート可否マトリクス。リポジトリにはコミットせず、実行ごとに Artifact として生成する |
+| `societies/` | 国内学会クラス（IPSJ / JSAI / IEICE）の**ビルド確認用スモークテスト**。`fetch-classes.sh` でクラスを取得し、各 `sample.tex` が upLaTeX + dvipdfmx でコンパイルできるかだけを確認する（投稿テンプレートではない） |
+| `REPORT.md` | **CI 生成物（Artifact）**: パッケージ × エンジンのサポート可否マトリクス＋国内学会クラスのビルド確認結果。リポジトリにはコミットせず、実行ごとに Artifact として生成する |
 
 ## 実行方法（GitHub Actions）
 
@@ -41,3 +42,14 @@ engines ::: name ::: preamble ::: body ::: note
 - `preamble`: `\documentclass` 直後に入れる行（`\usepackage` や設定。無ければ `-`）
 - `body`: `document` 環境内で機能を試すスニペット（無ければ `-`）
 - `note`: 備考（無ければ `-`）
+
+## 国内学会クラスのビルド確認
+
+`societies/{ipsj,jsai,ieice}/` は各学会クラスのビルド可否を確認するスモークテストです
+（投稿テンプレートではありません）。`run-tests.sh` が `societies/fetch-classes.sh` で
+クラス（`ipsj.cls` / `jsaiac.cls` / `ieicej.cls`）を公式配布元から取得し、各 `sample.tex` を
+upLaTeX + dvipdfmx でコンパイルして PASS/FAIL を `REPORT.md` に記録します。
+
+クラスは各学会の配布物のためリポジトリには同梱しません（`.gitignore` で除外）。配布 URL の変更や
+取得失敗、ビルド失敗はいずれも REPORT に記録するだけで、**CI ジョブは失敗させません**（非致命）。
+ローカルで試す場合は `bash tests/societies/fetch-classes.sh` 後に各ディレクトリで `latexmk sample.tex` を実行します。
